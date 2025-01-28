@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#141414"
+    tools:context=".CardsFragment">
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <FrameLayout
+                    android:layout_width="167dp"
+                    android:layout_height="280dp"
+                    android:layout_margin="40px"
+                    android:background="@drawable/rounded"
+                    android:duplicateParentState="false">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center">
+
+                        <Button
+                            android:id="@+id/buttonAddTopLeft"
+                            android:layout_width="170dp"
+                            android:layout_height="100dp"
+                            android:text="+"
+                            android:textColor="#FFFFFF"
+                            android:textSize="24sp"
+                            android:layout_marginBottom="10dp"
+                            android:backgroundTint="#00000000"
+                            android:shadowColor="#000000"
+                            android:shadowDx="1"
+                            android:shadowDy="1"
+                            android:shadowRadius="2" />
+
+                        <TextView
+                            android:id="@+id/counterTopLeft"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:rotation="90"
+                            android:text="40"
+                            android:textColor="#FFFFFF"
+                            android:textSize="48sp"
+                            android:textStyle="bold"
+                            android:shadowColor="#000000"
+                            android:shadowDx="1"
+                            android:shadowDy="1"
+                            android:shadowRadius="2" />
+
+                        <Button
+                            android:id="@+id/buttonSubtractTopLeft"
+                            android:layout_width="170dp"
+                            android:layout_height="100dp"
+                            android:text="-"
+                            android:textColor="#FFFFFF"
+                            android:textSize="24sp"
+                            android:layout_marginTop="10dp"
+                            android:backgroundTint="#00000000"
+                            android:shadowColor="#000000"
+                            android:shadowDx="1"
+                            android:shadowDy="1"
+                            android:shadowRadius="2"/>
+                    </LinearLayout>
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="167dp"
+                    android:layout_height="280dp"
+                    android:layout_margin="40px"
+                    android:background="@drawable/rounded">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center">
+
+                        <Button
+                            android:id="@+id/buttonAddTopRight"
+                            android:layout_width="170dp"
+                            android:layout_height="100dp"
+                            android:text="+"
+                            android:textColor="#FFFFFF"
+                            android:textSize="24sp"
+                            android:layout_marginBottom="10dp"
+                            android:backgroundTint="#00000000"
+                            android:shadowColor="#000000"
+                            android:shadowDx="1"
+                            android:shadowDy="1"
+                            android:shadowRadius="2"/>
+
+                        <TextView
+                            android:id="@+id/counterTopRight"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:rotation="-90"
+                            android:text="40"
+                            android:textColor="#FFFFFF"
+                            android:textSize="48sp"
+                            android:textStyle="bold"
+                            android:shadowColor="#000000"
+                            android:shadowDx="1"
+                            android:shadowDy="1"
+                            android:shadowRadius="2" />
+
+                        <Button
+                            android:id="@+id/buttonSubtractTopRight"
+                            android:layout_width="170dp"
+                            android:layout_height="100dp"
+                            android:text="-"
+                            android:textColor="#FFFFFF"
+                            android:textSize="24sp"
+                            android:layout_marginTop="10dp"
+                            android:backgroundTint="#00000000"
+                            android:shadowColor="#000000"
+                            android:shadowDx="1"
+                            android:shadowDy="1"
+                            android:shadowRadius="2"/>
+                    </LinearLayout>
+
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/buttonRestart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="40px"
+                    android:layout_marginEnd="20px"
+                    android:layout_marginRight="20px"
+                    android:layout_weight="1"
+                    android:text="Restart"
+                    android:textColor="#FFFFFF"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <FrameLayout
+                    android:layout_width="167dp"
+                    android:layout_height="280dp"
+                    android:layout_margin="40px"
+                    android:background="@drawable/rounded">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center">
+
+                        <Button
+                            android:id="@+id/buttonAddBotLeft"
+                            android:layout_width="170dp"
+                            android:layout_height="100dp"
+                            android:text="+"
+                            android:textColor="#FFFFFF"
+                            android:textSize="24sp"
+                            android:layout_marginBottom="10dp"
+                            android:backgroundTint="#00000000"
+                            android:shadowColor="#000000"
+                            android:shadowDx="1"
+                            android:shadowDy="1"
+                            android:shadowRadius="2"/>
+
+                        <TextView
+                            android:id="@+id/counterBotLeft"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:rotation="90"
+                            android:text="40"
+                            android:textColor="#FFFFFF"
+                            android:textSize="48sp"
+                            android:textStyle="bold"
+                            android:shadowColor="#000000"
+                            android:shadowDx="1"
+                            android:shadowDy="1"
+                            android:shadowRadius="2" />
+
+                        <Button
+                            android:id="@+id/buttonSubtractBotLeft"
+                            android:layout_width="170dp"
+                            android:layout_height="100dp"
+                            android:text="-"
+                            android:textColor="#FFFFFF"
+                            android:textSize="24sp"
+                            android:layout_marginTop="10dp"
+                            android:backgroundTint="#00000000"
+                            android:shadowColor="#000000"
+                            android:shadowDx="1"
+                            android:shadowDy="1"
+                            android:shadowRadius="2"/>
+                    </LinearLayout>
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="167dp"
+                    android:layout_height="280dp"
+                    android:layout_margin="40px"
+                    android:background="@drawable/rounded">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center">
+
+                        <Button
+                            android:id="@+id/buttonAddBotRight"
+                            android:layout_width="170dp"
+                            android:layout_height="100dp"
+                            android:text="+"
+                            android:textColor="#FFFFFF"
+                            android:textSize="24sp"
+                            android:layout_marginBottom="10dp"
+                            android:backgroundTint="#00000000"
+                            android:shadowColor="#000000"
+                            android:shadowDx="1"
+                            android:shadowDy="1"
+                            android:shadowRadius="2"/>
+
+                        <TextView
+                            android:id="@+id/counterBotRight"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:rotation="-90"
+                            android:text="40"
+                            android:textColor="#FFFFFF"
+                            android:textSize="48sp"
+                            android:textStyle="bold"
+                            android:shadowColor="#000000"
+                            android:shadowDx="1"
+                            android:shadowDy="1"
+                            android:shadowRadius="2" />
+
+                        <Button
+                            android:id="@+id/buttonSubtractBotRight"
+                            android:layout_width="170dp"
+                            android:layout_height="100dp"
+                            android:layout_marginTop="10dp"
+                            android:backgroundTint="#00000000"
+                            android:shadowColor="#000000"
+                            android:shadowDx="1"
+                            android:shadowDy="1"
+                            android:shadowRadius="5  "
+                            android:text="-"
+                            android:textColor="#FFFFFF"
+                            android:textSize="24sp" />
+                    </LinearLayout>
+
+                </FrameLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
