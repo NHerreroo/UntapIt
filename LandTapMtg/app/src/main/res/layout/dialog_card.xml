@@ -7,28 +7,51 @@
 
     <TextView
         android:id="@+id/cardName"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="15dp"/>
 
     <ImageView
         android:id="@+id/cardImage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:adjustViewBounds="true" />
+        android:adjustViewBounds="true"/>
 
     <TextView
-        android:id="@+id/cardDescription"
-        android:layout_width="wrap_content"
+        android:id="@+id/cardPrice"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="8dp" />
+        android:paddingTop="8dp"
+        android:gravity="center"
+        android:textSize="14sp"
+        android:textStyle="bold"/>
 
-    <Button
-        android:id="@+id/closeButton"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Cerrar"
-        android:layout_gravity="center_horizontal"
-        android:padding="8dp"/>
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="16dp">
+
+        <Button
+            android:id="@+id/addToCollectionButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Añadir a colección"
+            android:padding="8dp"/>
+
+        <Button
+            android:id="@+id/closeButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Cancelar"
+            android:padding="8dp"/>
+    </LinearLayout>
+
 </LinearLayout>

@@ -3,6 +3,7 @@ package com.example.landtapmtg;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,19 +81,25 @@ public class CardsFragment extends Fragment {
 
                     String imageUrl = null;
                     if (jsonResponse.has("image_uris")) {
-                        imageUrl = jsonResponse.getJSONObject("image_uris").getString("normal");
+                        imageUrl = jsonResponse.getJSONObject("image_uris").getString("png");
                     } else if (jsonResponse.has("card_faces")) {
                         imageUrl = jsonResponse.getJSONArray("card_faces")
                                 .getJSONObject(0)
                                 .getJSONObject("image_uris")
-                                .getString("normal");
+                                .getString("png");
                     }
 
-                    String description = jsonResponse.optString("oracle_text", "Sin descripción");
+                    String price;
+                    if (jsonResponse.has("prices")) {
+                        JSONObject prices = jsonResponse.getJSONObject("prices");
+                        price = prices.optString("usd", "Sin precio");
+                    } else {
+                        price = "Sin precio";
+                    }
 
                     String finalImageUrl = imageUrl;
                     mainHandler.post(() -> {
-                        CardDialogFragment dialogFragment = CardDialogFragment.newInstance(name, finalImageUrl, description);
+                        CardDialogFragment dialogFragment = CardDialogFragment.newInstance(name, finalImageUrl, price);
                         dialogFragment.show(getParentFragmentManager(), "CardDialog");
                     });
 
