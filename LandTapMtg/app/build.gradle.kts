@@ -42,6 +42,8 @@ dependencies {
     implementation(libs.activity)
     implementation(libs.constraintlayout)
     implementation(libs.volley)
+    implementation(libs.firebase.crashlytics.buildtools)
+    implementation(libs.cronet.embedded)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -52,4 +54,6 @@ dependencies {
     implementation ("com.google.android.material:material:1.3.0-alpha03")
     implementation("com.github.bumptech.glide:glide:4.16.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
+    implementation("org.json:json:20210307")
+    implementation("com.squareup.okhttp3:okhttp:4.11.0")
 }

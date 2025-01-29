@@ -1,6 +1,8 @@
 package com.example.landtapmtg;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,22 +14,26 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+
+import java.io.IOException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class CardsFragment extends Fragment {
 
     private EditText searchInput;
     private Button searchButton;
-    private RequestQueue requestQueue;
+    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private final Handler mainHandler = new Handler(Looper.getMainLooper());
+    private final OkHttpClient client = new OkHttpClient();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -35,7 +41,6 @@ public class CardsFragment extends Fragment {
 
         searchInput = view.findViewById(R.id.searchInput);
         searchButton = view.findViewById(R.id.searchButton);
-        requestQueue = Volley.newRequestQueue(requireContext());
 
         searchButton.setOnClickListener(v -> searchCard());
 
@@ -49,45 +54,52 @@ public class CardsFragment extends Fragment {
             return;
         }
 
-        try {
-            // Codificar el nombre de la carta correctamente para la URL
-            String encodedCardName = URLEncoder.encode(cardName, "UTF-8");
-            String url = "https://api.scryfall.com/cards/named?fuzzy=" + encodedCardName;
+        String apiUrl = "https://api.scryfall.com/cards/named?exact=" + cardName.replace(" ", "+");
 
-            StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                    response -> {
-                        try {
-                            JSONObject jsonResponse = new JSONObject(response);
-                            String name = jsonResponse.getString("name");
+        Request request = new Request.Builder()
+                .url(apiUrl)
+                .get()
+                .build();
 
-                            // Manejar diferentes estructuras de imágenes
-                            String imageUrl = null;
-                            if (jsonResponse.has("image_uris")) {
-                                imageUrl = jsonResponse.getJSONObject("image_uris").getString("normal");
-                            } else if (jsonResponse.has("card_faces")) {
-                                // Si es una carta de dos caras, toma la primera imagen
-                                imageUrl = jsonResponse.getJSONArray("card_faces")
-                                        .getJSONObject(0)
-                                        .getJSONObject("image_uris")
-                                        .getString("normal");
-                            }
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                mainHandler.post(() -> Toast.makeText(getContext(), "Error en la búsqueda", Toast.LENGTH_SHORT).show());
+            }
 
-                            String description = jsonResponse.optString("oracle_text", "Sin descripción");
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    mainHandler.post(() -> Toast.makeText(getContext(), "Carta no encontrada", Toast.LENGTH_SHORT).show());
+                    return;
+                }
 
-                            // Mostrar el DialogFragment con la información de la carta
-                            CardDialogFragment dialogFragment = CardDialogFragment.newInstance(name, imageUrl, description);
-                            dialogFragment.show(getParentFragmentManager(), "CardDialog");
+                try {
+                    JSONObject jsonResponse = new JSONObject(response.body().string());
+                    String name = jsonResponse.getString("name");
 
-                        } catch (JSONException e) {
-                            Toast.makeText(getContext(), "Error al procesar la respuesta", Toast.LENGTH_SHORT).show();
-                        }
-                    },
-                    error -> Toast.makeText(getContext(), "Carta no encontrada", Toast.LENGTH_SHORT).show());
+                    String imageUrl = null;
+                    if (jsonResponse.has("image_uris")) {
+                        imageUrl = jsonResponse.getJSONObject("image_uris").getString("normal");
+                    } else if (jsonResponse.has("card_faces")) {
+                        imageUrl = jsonResponse.getJSONArray("card_faces")
+                                .getJSONObject(0)
+                                .getJSONObject("image_uris")
+                                .getString("normal");
+                    }
 
-            requestQueue.add(stringRequest);
+                    String description = jsonResponse.optString("oracle_text", "Sin descripción");
 
-        } catch (UnsupportedEncodingException e) {
-            Toast.makeText(getContext(), "Error al codificar el nombre", Toast.LENGTH_SHORT).show();
-        }
+                    String finalImageUrl = imageUrl;
+                    mainHandler.post(() -> {
+                        CardDialogFragment dialogFragment = CardDialogFragment.newInstance(name, finalImageUrl, description);
+                        dialogFragment.show(getParentFragmentManager(), "CardDialog");
+                    });
+
+                } catch (JSONException e) {
+                    mainHandler.post(() -> Toast.makeText(getContext(), "Error al procesar la respuesta", Toast.LENGTH_SHORT).show());
+                }
+            }
+        });
     }
 }

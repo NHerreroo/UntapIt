@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -38,6 +39,7 @@ public class CardDialogFragment extends DialogFragment {
         TextView cardName = view.findViewById(R.id.cardName);
         ImageView cardImage = view.findViewById(R.id.cardImage);
         TextView cardDescription = view.findViewById(R.id.cardDescription);
+        Button closeButton = view.findViewById(R.id.closeButton);
 
         if (getArguments() != null) {
             cardName.setText(getArguments().getString(ARG_NAME));
@@ -46,6 +48,8 @@ public class CardDialogFragment extends DialogFragment {
             String imageUrl = getArguments().getString(ARG_IMAGE);
             Glide.with(this).load(imageUrl).into(cardImage);
         }
+
+        closeButton.setOnClickListener(v -> dismiss());
 
         return view;
     }
