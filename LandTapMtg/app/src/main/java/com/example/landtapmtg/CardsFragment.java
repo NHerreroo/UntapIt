@@ -1,64 +1,93 @@
 package com.example.landtapmtg;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CardsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 public class CardsFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public CardsFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CardsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static CardsFragment newInstance(String param1, String param2) {
-        CardsFragment fragment = new CardsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private EditText searchInput;
+    private Button searchButton;
+    private RequestQueue requestQueue;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_cards, container, false);
+
+        searchInput = view.findViewById(R.id.searchInput);
+        searchButton = view.findViewById(R.id.searchButton);
+        requestQueue = Volley.newRequestQueue(requireContext());
+
+        searchButton.setOnClickListener(v -> searchCard());
+
+        return view;
+    }
+
+    private void searchCard() {
+        String cardName = searchInput.getText().toString().trim();
+        if (cardName.isEmpty()) {
+            Toast.makeText(getContext(), "Introduce el nombre de una carta", Toast.LENGTH_SHORT).show();
+            return;
         }
-    }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_cards, container, false);
+        try {
+            // Codificar el nombre de la carta correctamente para la URL
+            String encodedCardName = URLEncoder.encode(cardName, "UTF-8");
+            String url = "https://api.scryfall.com/cards/named?fuzzy=" + encodedCardName;
+
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                    response -> {
+                        try {
+                            JSONObject jsonResponse = new JSONObject(response);
+                            String name = jsonResponse.getString("name");
+
+                            // Manejar diferentes estructuras de imágenes
+                            String imageUrl = null;
+                            if (jsonResponse.has("image_uris")) {
+                                imageUrl = jsonResponse.getJSONObject("image_uris").getString("normal");
+                            } else if (jsonResponse.has("card_faces")) {
+                                // Si es una carta de dos caras, toma la primera imagen
+                                imageUrl = jsonResponse.getJSONArray("card_faces")
+                                        .getJSONObject(0)
+                                        .getJSONObject("image_uris")
+                                        .getString("normal");
+                            }
+
+                            String description = jsonResponse.optString("oracle_text", "Sin descripción");
+
+                            // Mostrar el DialogFragment con la información de la carta
+                            CardDialogFragment dialogFragment = CardDialogFragment.newInstance(name, imageUrl, description);
+                            dialogFragment.show(getParentFragmentManager(), "CardDialog");
+
+                        } catch (JSONException e) {
+                            Toast.makeText(getContext(), "Error al procesar la respuesta", Toast.LENGTH_SHORT).show();
+                        }
+                    },
+                    error -> Toast.makeText(getContext(), "Carta no encontrada", Toast.LENGTH_SHORT).show());
+
+            requestQueue.add(stringRequest);
+
+        } catch (UnsupportedEncodingException e) {
+            Toast.makeText(getContext(), "Error al codificar el nombre", Toast.LENGTH_SHORT).show();
+        }
     }
 }
