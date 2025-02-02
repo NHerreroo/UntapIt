@@ -3,13 +3,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:gravity="top">
 
+    <!-- Buscador de cartas -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingBottom="16dp">
+        android:paddingBottom="16dp"
+        android:layout_marginTop="40dp">
 
         <EditText
             android:id="@+id/searchInput"
@@ -17,14 +20,30 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:hint="Introduce el nombre de la carta"
-            android:inputType="text" />
+            android:textColorHint="#666666"
+            android:inputType="text"
+            android:textColor="@color/white"/>
 
         <Button
             android:id="@+id/searchButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Buscar"
-            android:padding="8dp" />
+            android:padding="8dp"
+            android:backgroundTint="@color/white"
+            android:textColor="@color/black"/>
     </LinearLayout>
 
+    <!-- Contenedor desplazable -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"/>
+    </ScrollView>
 </LinearLayout>

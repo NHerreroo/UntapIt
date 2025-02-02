@@ -53,5 +53,4 @@
             android:text="Cancelar"
             android:padding="8dp"/>
     </LinearLayout>
-
 </LinearLayout>

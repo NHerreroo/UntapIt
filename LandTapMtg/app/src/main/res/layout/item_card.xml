@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    android:background="#00000000"
+    >
+
+    <androidx.cardview.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:elevation="4dp"
+        app:cardCornerRadius="24dp"
+        app:cardBackgroundColor="#212121"
+        tools:ignore="MissingConstraints">  <!-- Usa un color negro aquí -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="18dp">
+
+            <!-- Imagen de la carta -->
+            <ImageView
+                android:id="@+id/item_card_image"
+                android:layout_width="100dp"
+                android:layout_height="140dp"
+                android:layout_marginEnd="16dp"
+                android:scaleType="centerCrop" />
+
+            <!-- Información de la carta -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <!-- Nombre de la carta -->
+                <TextView
+                    android:id="@+id/item_card_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"/>
+
+                <!-- Coste de maná -->
+                <TextView
+                    android:id="@+id/item_card_mana_cost"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:textColor="#CECECE"
+                    android:textSize="14sp" />
+
+                <!-- Tipo de carta -->
+                <TextView
+                    android:id="@+id/item_card_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
+
+                <!-- Texto de la carta -->
+                <TextView
+                    android:id="@+id/item_card_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:textSize="12sp"
+                    android:textColor="#A8A8A8"/>
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

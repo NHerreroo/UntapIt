@@ -3,25 +3,22 @@ package com.example.landtapmtg;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -29,20 +26,27 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class CardsFragment extends Fragment {
-
     private EditText searchInput;
     private Button searchButton;
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
     private final OkHttpClient client = new OkHttpClient();
+    private CardCollectionViewModel viewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_cards, container, false);
 
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        CardAdapter adapter = new CardAdapter();
+        recyclerView.setAdapter(adapter);
+
+        viewModel = new ViewModelProvider(this).get(CardCollectionViewModel.class);
+        viewModel.getAllCards().observe(getViewLifecycleOwner(), adapter::setCards);
+
         searchInput = view.findViewById(R.id.searchInput);
         searchButton = view.findViewById(R.id.searchButton);
-
         searchButton.setOnClickListener(v -> searchCard());
 
         return view;
@@ -65,48 +69,52 @@ public class CardsFragment extends Fragment {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                mainHandler.post(() -> Toast.makeText(getContext(), "Error en la búsqueda", Toast.LENGTH_SHORT).show());
+                mainHandler.post(() ->
+                        Toast.makeText(getContext(), "Error en la búsqueda", Toast.LENGTH_SHORT).show());
             }
 
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                 if (!response.isSuccessful()) {
-                    mainHandler.post(() -> Toast.makeText(getContext(), "Carta no encontrada", Toast.LENGTH_SHORT).show());
+                    mainHandler.post(() ->
+                            Toast.makeText(getContext(), "Carta no encontrada", Toast.LENGTH_SHORT).show());
                     return;
                 }
 
                 try {
                     JSONObject jsonResponse = new JSONObject(response.body().string());
+                    String scryfallId = jsonResponse.getString("id");
                     String name = jsonResponse.getString("name");
+                    String manaCost = jsonResponse.optString("mana_cost", "");
+                    String typeLine = jsonResponse.getString("type_line");
+                    String oracleText = jsonResponse.optString("oracle_text", "");
+                    String price = jsonResponse.getJSONObject("prices").optString("usd", "Sin precio");
+                    String imageUrl = getImageUrl(jsonResponse);
 
-                    String imageUrl = null;
-                    if (jsonResponse.has("image_uris")) {
-                        imageUrl = jsonResponse.getJSONObject("image_uris").getString("png");
-                    } else if (jsonResponse.has("card_faces")) {
-                        imageUrl = jsonResponse.getJSONArray("card_faces")
-                                .getJSONObject(0)
-                                .getJSONObject("image_uris")
-                                .getString("png");
-                    }
+                    CardEntity newCard = new CardEntity(scryfallId, name, manaCost, typeLine, oracleText, imageUrl, price);
 
-                    String price;
-                    if (jsonResponse.has("prices")) {
-                        JSONObject prices = jsonResponse.getJSONObject("prices");
-                        price = prices.optString("usd", "Sin precio");
-                    } else {
-                        price = "Sin precio";
-                    }
-
-                    String finalImageUrl = imageUrl;
                     mainHandler.post(() -> {
-                        CardDialogFragment dialogFragment = CardDialogFragment.newInstance(name, finalImageUrl, price);
+                        CardDialogFragment dialogFragment = CardDialogFragment.newInstance(newCard);
                         dialogFragment.show(getParentFragmentManager(), "CardDialog");
                     });
 
                 } catch (JSONException e) {
-                    mainHandler.post(() -> Toast.makeText(getContext(), "Error al procesar la respuesta", Toast.LENGTH_SHORT).show());
+                    mainHandler.post(() ->
+                            Toast.makeText(getContext(), "Error al procesar la respuesta", Toast.LENGTH_SHORT).show());
                 }
             }
         });
+    }
+
+    private String getImageUrl(JSONObject jsonResponse) throws JSONException {
+        if (jsonResponse.has("image_uris")) {
+            return jsonResponse.getJSONObject("image_uris").getString("png");
+        } else if (jsonResponse.has("card_faces")) {
+            return jsonResponse.getJSONArray("card_faces")
+                    .getJSONObject(0)
+                    .getJSONObject("image_uris")
+                    .getString("png");
+        }
+        return null;
     }
 }

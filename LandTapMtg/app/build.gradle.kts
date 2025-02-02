@@ -56,4 +56,8 @@ dependencies {
     annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
     implementation("org.json:json:20210307")
     implementation("com.squareup.okhttp3:okhttp:4.11.0")
+    implementation("androidx.room:room-runtime:2.6.1")
+    annotationProcessor("androidx.room:room-compiler:2.6.1")
+    implementation("androidx.room:room-ktx:2.6.1")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
 }
