@@ -65,4 +65,9 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder
             image = itemView.findViewById(R.id.item_card_image);
         }
     }
+
+    public CardEntity getCardAtPosition(int position) {
+        return cards.get(position);
+    }
+
 }

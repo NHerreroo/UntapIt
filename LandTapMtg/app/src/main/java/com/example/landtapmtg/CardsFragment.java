@@ -24,6 +24,8 @@ import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class CardsFragment extends Fragment {
     private EditText searchInput;
@@ -41,6 +43,23 @@ public class CardsFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         CardAdapter adapter = new CardAdapter();
         recyclerView.setAdapter(adapter);
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                int position = viewHolder.getAdapterPosition();
+                CardEntity cardToDelete = adapter.getCardAtPosition(position);
+                viewModel.delete(cardToDelete); // Borra la carta de la base de datos
+            }
+        });
+
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+
 
         viewModel = new ViewModelProvider(this).get(CardCollectionViewModel.class);
         viewModel.getAllCards().observe(getViewLifecycleOwner(), adapter::setCards);

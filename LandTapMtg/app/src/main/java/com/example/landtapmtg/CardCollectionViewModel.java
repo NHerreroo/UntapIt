@@ -25,4 +25,9 @@ public class CardCollectionViewModel extends AndroidViewModel {
     public void insert(CardEntity card) {
         AppDatabase.databaseWriteExecutor.execute(() -> cardDao.insert(card));
     }
+
+    public void delete(CardEntity card) {
+        AppDatabase.databaseWriteExecutor.execute(() -> cardDao.delete(card));
+    }
+
 }
