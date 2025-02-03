@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="#1D1D1D">
 
     <TextView
         android:id="@+id/cardName"
@@ -13,7 +14,8 @@
         android:textAlignment="center"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:layout_marginBottom="15dp"/>
+        android:layout_marginBottom="15dp"
+        android:textColor="@color/white"/>
 
     <ImageView
         android:id="@+id/cardImage"
@@ -28,7 +30,8 @@
         android:paddingTop="8dp"
         android:gravity="center"
         android:textSize="14sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:textColor="@color/white"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -43,7 +46,14 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Añadir a colección"
-            android:padding="8dp"/>
+            android:padding="8dp"
+            android:backgroundTint="@color/white"
+            android:textColor="@color/black"/>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight= "0.4"/>
 
         <Button
             android:id="@+id/closeButton"
@@ -51,6 +61,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Cancelar"
-            android:padding="8dp"/>
+            android:padding="8dp"
+            android:backgroundTint="@color/white"
+            android:textColor="@color/black"/>
     </LinearLayout>
 </LinearLayout>

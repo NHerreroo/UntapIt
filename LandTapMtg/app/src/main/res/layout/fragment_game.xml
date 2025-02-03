@@ -158,7 +158,9 @@
                     android:layout_marginRight="20px"
                     android:layout_weight="1"
                     android:text="Restart"
-                    android:textColor="#FFFFFF"/>
+                    android:textColor="@color/black"
+                    android:backgroundTint="@color/white"
+                    />
 
             </LinearLayout>
 
