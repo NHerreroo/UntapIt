@@ -40,7 +40,7 @@ public class CardDialogFragment extends DialogFragment {
 
         if (card != null) {
             cardName.setText(card.name);
-            cardPrice.setText(card.price);
+            cardPrice.setText(card.price + "$");
             Glide.with(this).load(card.imageUrl).into(cardImage);
         }
 

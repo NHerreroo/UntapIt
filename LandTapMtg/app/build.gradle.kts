@@ -60,4 +60,7 @@ dependencies {
     annotationProcessor("androidx.room:room-compiler:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
+    implementation ("com.google.android.material:material:1.5.0")
+    implementation ("androidx.coordinatorlayout:coordinatorlayout:1.2.0")
+
 }
