@@ -18,4 +18,9 @@ public interface CardDao {
 
     @Query("SELECT * FROM cards ORDER BY id DESC")
     LiveData<List<CardEntity>> getAllCards();
+
+    @Query("SELECT * FROM cards WHERE name LIKE :query ORDER BY id DESC")
+    LiveData<List<CardEntity>> filterCardsByName(String query);
+
+
 }

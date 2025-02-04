@@ -30,4 +30,8 @@ public class CardCollectionViewModel extends AndroidViewModel {
         AppDatabase.databaseWriteExecutor.execute(() -> cardDao.delete(card));
     }
 
+    public LiveData<List<CardEntity>> filterCards(String name) {
+        return cardDao.filterCardsByName("%" + name + "%");
+    }
+
 }
